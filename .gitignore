@@ -1,0 +1,21 @@
+node_modules
+yarn-error.log
+
+# Please use yarn!
+package.lock
+
+# All the env variables should be passed at runtime to comply with 12 Factor App - see https://12factor.net/config
+# We allow ONLY .env.development to make it easy to run the app locally
+.env
+.env.production
+.env.test
+
+# Local ENVs should never be committed
+.env.*.local
+
+# next.js
+/.next/
+/out/
+
+# production
+/build

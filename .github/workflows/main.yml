@@ -1,0 +1,70 @@
+name: Build & Release
+on:
+  push:
+    branches:
+      - master
+      - testing
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      # Note: this env variables are set at BUILD time and they cannot be changed once the build is made
+      - name: Set production env variables
+        if: endsWith(github.ref, '/master')
+        run: |
+          echo "TZ=UTC" >> .env
+          echo "NODE_ENV=production" >> .env
+
+      # Note: this env variables are set at BUILD time and they cannot be changed once the build is made
+      - name: Set testing env variables
+        if: endsWith(github.ref, '/testing')
+        run: |
+          echo "TZ=UTC" >> .env
+          echo "NODE_ENV=production" >> .env
+
+      - name: Check for .vercel config
+        id: check_vercel_config
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".vercel/project.json"
+
+      - name: Create build.json
+        uses: schdck/create-env-json@v1
+        with:
+          file-name: "./build.json"
+          BD-ID: ${{ github.run_id }}
+          BD-VERSION: ${{ github.sha }}
+          BD-APP: ${{ github.repository }}
+
+      - name: Setup .npmrc for build
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+
+      # Build
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      # Deploy
+      - name: Deploy on Vercel (testing)
+        uses: amondnet/vercel-action@v19
+        if: steps.check_vercel_config.outputs.files_exists == 'true' && endsWith(github.ref, '/testing')
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy on Vercel (production)
+        uses: amondnet/vercel-action@v19
+        if: steps.check_vercel_config.outputs.files_exists == 'true' && endsWith(github.ref, '/master')
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # vercel-args: "--prod"
