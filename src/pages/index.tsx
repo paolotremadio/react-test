@@ -37,24 +37,22 @@ const Index = () => {
   return (
     <>
       <AppBar position="static">
-        <Toolbar>
-          <Container>
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} md>
-                <Typography variant="h4">Demo app</Typography>
-              </Grid>
-              <Grid item xs={12} md="auto">
-                <Button
-                  variant="outlined"
-                  color="inherit"
-                  onClick={() => location.reload()}
-                >
-                  Reload
-                </Button>
-              </Grid>
+        <Container component={Toolbar}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs>
+              <Typography variant="h4">Demo app</Typography>
             </Grid>
-          </Container>
-        </Toolbar>
+            <Grid item xs="auto">
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={() => location.reload()}
+              >
+                Reload
+              </Button>
+            </Grid>
+          </Grid>
+        </Container>
       </AppBar>
       <Container>
         <Box paddingY={2}>
