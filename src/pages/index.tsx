@@ -4,7 +4,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import {
-  AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography,
+  AppBar, Box, Button, Container, Grid, Link, Paper, Toolbar, Typography,
 } from '@material-ui/core';
 
 import { DemoForm } from '@/components/DemoForm';
@@ -62,6 +62,12 @@ const Index = () => {
             </Box>
           </Paper>
         </Box>
+        <Typography align="center" variant="caption" color="textSecondary">
+          {'The source code for this project is '}
+          <Link href="https://github.com/paolotremadio/react-test" target="_blank">
+            available on GitHub
+          </Link>
+        </Typography>
       </Container>
     </>
   );

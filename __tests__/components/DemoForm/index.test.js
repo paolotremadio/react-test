@@ -32,4 +32,12 @@ describe('DemoForm', () => {
       ).toBeInTheDocument();
     });
   });
+
+  it('Renders correct snapshot', async () => {
+    const { container } = render(<DemoForm initialValue="test"/>);
+
+    expect(
+      container
+    ).toMatchSnapshot();
+  });
 });

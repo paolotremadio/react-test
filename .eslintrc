@@ -15,12 +15,8 @@
       "alias": {
         "map": [
           [
-            "@/components",
-            "./src/components/"
-          ],
-          [
-            "@/graphql",
-            "./src/graphql/"
+            "@",
+            "./src"
           ]
         ],
         "extensions": [
